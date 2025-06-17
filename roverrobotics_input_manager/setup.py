@@ -21,7 +21,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "joys_manager = roverrobotics_input_manager.joys_manager:main",
+            "joys_manager.py = roverrobotics_input_manager.joys_manager:main",
         ],
     },
 )
