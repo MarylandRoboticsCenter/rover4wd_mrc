@@ -107,18 +107,6 @@ Our launch files launch (1) The Robot Driver, (2) The robot description, (3) an 
 (4) PS4 Controller Driver: handles input from the PS4 Controller
 
 
-## Simulation with Gazebo
-Our ROS2 packages now support simulations for all robots! The ``roverrobotics_gazebo`` package implements all of the simulation launches. You can launch your simulation using the following:
-```bash
-ros2 launch roverrobotics_gazebo <robot>_gazebo.launch.py
-```
-*Valid ``<robot>`` options are: ``2wd_rover, 4wd_rover, mini, miti, indoor_miti``*
-
-The 2wd_rover and 4wd_rover replace the Rover Zero and Rover Pro since they have the same footprint. The 2wd_rover implements our chassis with two driven front wheels and two rear casters and the 4wd_rover implements our chassis with 4 driven wheels in a skid steer configuration.
-
-Note: You have to install gazebo specifically for ROS. Our install script does not install gazebo. To install gazebo:
-```sudo apt install ros-{DISTRO}-ros-gz```
-
 ## Getting the Sensor Packages
 At rover we have several mainly used sensors that we use. The BNO055 IMU and RP Lidar S2 are our goto IMU and Lidar sensors. Our install script does not automatically install these packages as not everyone needs them. To install them, follow the steps mentioned below to download the packages for BNO055 IMU and Slamtec RPLIDAR S2:
 ```bash
@@ -197,42 +185,10 @@ payload_link -> imu_link
 Please view the URDF file for your robot before deploying to ensure that you have the correct links made and the sensors you want to be added to the URDF setup correctly. There are more instructions in each robots URDF file.
 
 Additionally,
-Here are some more resources for understanding transformations, urdf, and gazebo:
+Here are some more resources for understanding transformations and urdf:
 
-[(1) Gazebo Sim Docs](https://gazebosim.org/docs)
+[(1) ROS URDF Docs](https://docs.ros.org/en/humble/Tutorials/Intermediate/URDF/URDF-Main.html)
 
-[(2) Gazebo ROS Docs](https://docs.ros.org/en/humble/Tutorials/Advanced/Simulators/Gazebo/Gazebo.html)
-
-[(3) Gazebo Sim ROS Installation](https://gazebosim.org/docs/garden/ros_installation)
-
-[(4) ROS URDF Docs](https://docs.ros.org/en/humble/Tutorials/Intermediate/URDF/URDF-Main.html)
-
-Here is an example that places a RPLidar S2 relative to the ``base_link`` instead of the payload and adds the gazebo plugin to run a lidar simulation:
-
-```xml
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="rplidar_s2">
-	<link name="lidar_link">
-		<visual>
-			<origin xyz="0 0 0" rpy="-1.57 0 3.1415"/>
-			<geometry>
-				<mesh filename="file://$(find roverrobotics_description)/meshes/rplidar_s2.dae"/>
-			</geometry>
-		</visual>
-		<collision>
-			<origin xyz="0 0 0" rpy="-1.57 0 3.1415"/>
-			<geometry>
-				<mesh filename="file://$(find roverrobotics_description)/meshes/rplidar_s2.dae"/>
-			</geometry>
-		</collision>
-	</link>
-
-	<joint name="lidar_to_payload" type="fixed">
-		<parent link="base_link"/> <!-- NOTICE THE PARENT LINK IS BASE_LINK -->
-		<child link="lidar_link"/>
-		<origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
-	</joint>
-</robot>
-```
 
 ## Navigation2 and Slam Toolbox
 We have provided launch files and configs for Navigation2 and Slam Toolbox. They are available in the ``roverrobotics_driver`` package.
